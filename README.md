@@ -14,7 +14,15 @@ Convert higher with AI-powered personalized landing pages that match your ad cop
 
 ---
 
-## ✨ Features
+## 📸 Demo & Screenshots
+
+### Frontend Interface
+
+![Troopod AI Personalizer Frontend](./docs/images/frontend-screenshot.png)
+
+*Real-time personalization interface with landing page preview*
+
+---
 
 - 🤖 **AI-Powered Copy Generation** – Generate conversion-optimized headlines, subheadlines, and CTAs using Groq's `llama-3.3-70b-versatile` model
 - 🎨 **Landing Page Enhancement** – Automatically inject personalized copy into your landing page HTML in real-time
