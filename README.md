@@ -18,9 +18,19 @@ Convert higher with AI-powered personalized landing pages that match your ad cop
 
 ### Frontend Interface
 
-![Troopod AI Personalizer Frontend](./docs/images/frontend-screenshot.png)
+The application provides an intuitive interface for personalizing landing pages:
 
-*Real-time personalization interface with landing page preview*
+1. **Landing Page URL Input** – Enter any website URL you want to personalize
+2. **Ad Creative URL Input** – Provide the image URL from your ad campaign
+3. **Generate Button** – AI processes the inputs in real-time
+4. **Live Preview** – See personalized copy and enhanced landing page instantly
+
+*Screenshot: Beautiful React interface with Tailwind CSS styling, real-time error handling, and loading states*
+
+To see screenshots, run the app locally:
+```bash
+npm run dev
+```
 
 ---
 
