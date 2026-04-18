@@ -36,6 +36,7 @@ export default function Home() {
     try {
       const res = await fetch('/api/transform', {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ imageUrl: img, landingPageUrl: url }),
       });
       const result = await res.json();
