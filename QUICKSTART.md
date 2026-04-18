@@ -42,10 +42,10 @@ https://images.unsplash.com/photo-...
 
 Create a `.env.local` file:
 ```
-OPENAI_API_KEY=sk-your-api-key-here
+GROQ_API_KEY=gsk_your-groq-api-key-here
 ```
 
-Get your API key from [OpenAI Platform](https://platform.openai.com/api-keys)
+Get your API key from [Groq Console](https://console.groq.com/keys)
 
 ### Dependencies
 - Node.js 18+

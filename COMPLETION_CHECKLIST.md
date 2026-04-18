@@ -11,7 +11,7 @@
 - [x] Error handling with user-friendly messages
 - [x] Loading states and feedback
 
-**Status**: Ready to deploy - just needs `.env` with real OpenAI API key
+**Status**: Ready to deploy - just needs `.env` with real Groq API key
 
 ---
 
@@ -37,9 +37,9 @@
 
 ### Architecture ✅
 ```
-Frontend (React)     →  Backend API (Next.js)  →  OpenAI
+Frontend (React)     →  Backend API (Next.js)  →  Groq AI
    ↓                        ↓
-[UI Form]  ──POST──►  [Ad Analysis]  ──Vision──►  GPT-4o
+[UI Form]  ──POST──►  [Ad Analysis]  ──Vision──►  Llama 3.3
                       [Copy Gen]     ──Chat──►   
                       [HTML Enhance]
                       [Validation]
@@ -94,7 +94,7 @@ Frontend (React)     →  Backend API (Next.js)  →  OpenAI
 ## Key Features Implemented
 
 ### Feature 1: Ad Analysis ✅
-- Uses OpenAI Vision to analyze ad images
+- Uses Groq AI to analyze ad images and generate personalized copy
 - Extracts emotional hooks and value props
 - Provides context for copy generation
 
@@ -131,10 +131,10 @@ Frontend (React)     →  Backend API (Next.js)  →  OpenAI
 
 ### To Deploy & Use
 
-1. **Add OpenAI API Key**
+1. **Add Groq API Key**
    ```bash
    # Edit .env.local
-   OPENAI_API_KEY=sk-your-real-api-key-here
+   GROQ_API_KEY=gsk_your-real-api-key-here
    ```
 
 2. **Test Locally**
@@ -201,8 +201,8 @@ troopod-ai-pm/
 ## What Needs User Action
 
 ⚠️ **Before Going Live**:
-1. Get OpenAI API key from https://platform.openai.com/api-keys
-2. Add to `.env.local`: `OPENAI_API_KEY=sk-...`
+1. Get Groq API key from https://console.groq.com/keys
+2. Add to `.env.local`: `GROQ_API_KEY=gsk-...`
 3. Test with real landing pages and ad images
 4. Deploy to Vercel or your hosting platform
 
@@ -214,7 +214,7 @@ troopod-ai-pm/
 
 This is a production-ready AI personalization system that:
 - ✅ Takes ad images + landing page URLs as input
-- ✅ Analyzes ads with OpenAI Vision  
+- ✅ Analyzes ads and generates personalized copy with Groq AI
 - ✅ Generates CRO-optimized personalized copy
 - ✅ Enhances real landing page HTML
 - ✅ Handles errors gracefully
