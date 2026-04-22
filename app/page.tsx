@@ -18,17 +18,51 @@ interface ApiResponse {
 export default function Home() {
   const [url, setUrl] = useState('');
   const [img, setImg] = useState('');
+  const [imgFile, setImgFile] = useState<string>('');
+  const [imgFileName, setImgFileName] = useState<string>('');
   const [data, setData] = useState<ApiResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      setError('Please upload an image file');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Image must be smaller than 5MB');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      setImgFile(result);
+      setImgFileName(file.name);
+      setImg('');
+      setError('');
+    };
+    reader.onerror = () => setError('Failed to read image file');
+    reader.readAsDataURL(file);
+  };
+
+  const clearUploadedImage = () => {
+    setImgFile('');
+    setImgFileName('');
+  };
 
   const runWorkflow = async () => {
     setLoading(true);
     setError('');
     setData(null);
-    
-    if (!url.trim() || !img.trim()) {
-      setError('Please enter both landing page URL and ad image URL');
+
+    const imageInput = imgFile || img.trim();
+
+    if (!url.trim() || !imageInput) {
+      setError('Please enter a landing page URL and provide an ad image (URL or upload)');
       setLoading(false);
       return;
     }
@@ -37,7 +71,7 @@ export default function Home() {
       const res = await fetch('/api/transform', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ imageUrl: img, landingPageUrl: url }),
+        body: JSON.stringify({ imageUrl: imageInput, landingPageUrl: url }),
       });
       const result = await res.json();
       
@@ -96,15 +130,51 @@ export default function Home() {
           <div className="space-y-2">
             <label className="text-sm font-semibold text-slate-200 flex items-center gap-2">
               <Upload size={16} className="text-purple-400" />
-              Ad Image URL
+              Ad Image
             </label>
-            <input 
-              className="w-full px-4 py-3 rounded-xl bg-slate-700/50 border border-slate-600 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition text-base" 
-              placeholder="https://images.unsplash.com/..." 
-              value={img} 
+            <input
+              className="w-full px-4 py-3 rounded-xl bg-slate-700/50 border border-slate-600 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition text-base disabled:opacity-50"
+              placeholder="https://images.unsplash.com/..."
+              value={img}
+              disabled={!!imgFile}
               onChange={e => setImg(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && runWorkflow()}
             />
+
+            <div className="flex items-center gap-3 pt-1">
+              <div className="flex-1 h-px bg-slate-600/50" />
+              <span className="text-xs text-slate-400 uppercase tracking-wider">or upload</span>
+              <div className="flex-1 h-px bg-slate-600/50" />
+            </div>
+
+            {!imgFile ? (
+              <label className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl bg-slate-700/30 border-2 border-dashed border-slate-600 text-slate-300 hover:bg-slate-700/50 hover:border-purple-500 cursor-pointer transition">
+                <Upload size={18} className="text-purple-400" />
+                <span className="text-sm font-medium">Click to upload an image (max 5MB)</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleFileUpload}
+                />
+              </label>
+            ) : (
+              <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-700/50 border border-purple-500/40">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={imgFile} alt="preview" className="w-14 h-14 rounded-lg object-cover border border-slate-600" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm text-slate-200 font-medium truncate">{imgFileName}</p>
+                  <p className="text-xs text-slate-400">Image ready</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={clearUploadedImage}
+                  className="px-3 py-1 text-xs font-semibold text-slate-300 hover:text-white bg-slate-600/50 hover:bg-slate-600 rounded-lg transition"
+                >
+                  Remove
+                </button>
+              </div>
+            )}
           </div>
 
           <button 

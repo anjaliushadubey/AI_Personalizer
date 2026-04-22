@@ -78,6 +78,15 @@ export async function POST(req: Request) {
       );
     }
 
+    const isDataUrl = typeof imageUrl === 'string' && imageUrl.startsWith('data:image/');
+    if (isDataUrl && imageUrl.length > 7_500_000) {
+      return NextResponse.json(
+        { error: "Uploaded image is too large (max 5MB)" },
+        { status: 413 }
+      );
+    }
+    const imageRef = isDataUrl ? '[user-uploaded ad creative]' : imageUrl;
+
     if (!process.env.GROQ_API_KEY) {
       return NextResponse.json(
         { error: "Groq API key not configured. Set GROQ_API_KEY in .env.local" },
@@ -89,7 +98,7 @@ export async function POST(req: Request) {
     const copyPrompt = `You are a world-class Conversion Rate Optimization (CRO) expert and copywriter.
 
 Generate personalized landing page copy for maximum conversions.
-Ad/Image URL: ${imageUrl}
+Ad/Image URL: ${imageRef}
 Landing Page URL: ${landingPageUrl}
 
 Create compelling copy that converts visitors to customers.
